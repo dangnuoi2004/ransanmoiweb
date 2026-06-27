@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rắn săn mồi</title>
+  <style>
+  </style>
+</head>
+<body>
+
+  <div id="title">Rắn săn mồi</div>
+
+  <div id="hud">
+    <div>
+      <div id="score-label">Điểm</div>
+      <div id="score">0</div>
+    </div>
+    <div id="diff-block">
+      <button class="diff-btn active" data-speed="300">Dễ</button>
+      <button class="diff-btn" data-speed="180">Bình thường</button>
+      <button class="diff-btn" data-speed="100">Khó</button>
+    </div>
+  </div>
+
+  <div id="canvas-wrap">
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div id="overlay">
+      <div id="overlay-box">
+        <div id="over-label">Kết thúc</div>
+        <div id="over-score">0</div>
+        <div id="over-msg">Nhấn để chơi lại</div>
+        <button id="restart-btn">Chơi lại</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint">↑ ↓ ← → để điều khiển · Vuốt trên màn hình cảm ứng</div>
+
+  <script>
+    const cvs = document.getElementById('canvas');
+    const ctx = cvs.getContext('2d');
+    const CELL = 20;
+    const COLS = cvs.width / CELL;
+
+    const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+    let snake, food, dir, score, interval, moved, speed;
+    speed = 300;
+
+    function init() {
+      snake = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+      dir = {x: 1, y: 0};
+      score = 0;
+      moved = false;
+      document.getElementById('score').textContent = '0';
+      document.getElementById('overlay').classList.remove('show');
+      spawnFood();
+      clearInterval(interval);
+      interval = setInterval(tick, speed);
+      draw();
+    }
+
+    function spawnFood() {
+      do {
+        food = {
+          x: Math.floor(Math.random() * COLS),
+y: Math.floor(Math.random() * COLS)
+        };
+      } while (snake.some(s => s.x === food.x && s.y === food.y));
+    }
+
+    function tick() {
+      const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+      moved = false;
+
+      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= COLS ||
+          snake.some(s => s.x === head.x && s.y === head.y)) {
+        clearInterval(interval);
+        document.getElementById('over-score').textContent = score;
+        document.getElementById('overlay').classList.add('show');
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score += 10;
+        document.getElementById('score').textContent = score;
+        spawnFood();
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+    </script>
+</body>
+</html>
