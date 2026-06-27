@@ -5,6 +5,173 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rắn săn mồi</title>
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-page: #f0ede6;
+      --bg-canvas: #e8eade;
+      --grid: rgba(0,0,0,0.07);
+      --snake-head: #2c3520;
+      --snake-body: #4e6030;
+      --snake-inner: #3d5022;
+      --snake-eye: #e8eade;
+      --food: #8b4513;
+      --text-primary: #1a1a18;
+      --text-secondary: #5a5a52;
+      --text-muted: #888878;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.12);
+      --border-strong: rgba(0,0,0,0.22);
+      --radius: 8px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-page: #141412;
+        --bg-canvas: #1a1a18;
+        --grid: rgba(255,255,255,0.04);
+        --snake-head: #d4d0c0;
+        --snake-body: #7a8060;
+        --snake-inner: #626a4e;
+        --snake-eye: #1a1a18;
+        --food: #c8905a;
+        --text-primary: #e8e4d8;
+        --text-secondary: #9a9688;
+        --text-muted: #666658;
+        --surface: #222220;
+        --border: rgba(255,255,255,0.10);
+        --border-strong: rgba(255,255,255,0.18);
+      }
+    }
+
+    body {
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      padding: 2rem 1rem;
+    }
+
+    #title {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    #hud {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 400px;
+    }
+
+    #score-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    #score {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+      min-width: 48px;
+    }
+
+    #diff-block { display: flex; gap: 4px; }
+
+    .diff-btn {
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      background: transparent;
+      border: 0.5px solid var(--border-strong);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .diff-btn:hover { background: var(--border); }
+
+    .diff-btn.active {
+      background: var(--text-primary);
+      color: var(--bg-page);
+      border-color: var(--text-primary);
+    }
+
+    #canvas-wrap {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 0.5px solid var(--border-strong);
+    }
+    canvas { display: block; }
+
+    #overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #overlay.show { display: flex; }
+
+    #overlay-box {
+      background: var(--surface);
+      border: 0.5px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    #over-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    #over-score {
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    #over-msg { font-size: 13px; color: var(--text-secondary); }
+
+    #restart-btn {
+      margin-top: 0.25rem;
+      padding: 8px 28px;
+      font-size: 14px;
+      font-weight: 500;
+      background: var(--text-primary);
+      color: var(--bg-page);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+    #restart-btn:hover { opacity: 0.82; }
+
+    #hint { font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; }
   </style>
 </head>
 <body>
