@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bảng Đặc Tả 20 Test Cases - Game Rắn Săn Mồi</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: #f4f5f7;
+      color: #1e293b;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .header-block {
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0f172a;
+    }
+
+    .sub-title {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #475569;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      padding: 12px 14px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .tc-id {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .tc-name {
+      color: #16a34a;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-block">
+      <h1>Bảng Đặc Tả 20 Test Cases Kiểm Thử</h1>
+      <div class="sub-title">Dự án: Trò chơi Rắn Săn Mồi (Snake Game) · Tài liệu kỹ thuật</div>
+    </div>
+    
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 8%">Mã TC</th>
+            <th style="width: 20%">Tên Kịch Bản</th>
+            <th style="width: 37%">Các Bước Thực Hiện</th>
+            <th style="width: 25%">Kết Quả Mong Đợi</th>
+            <th style="width: 10%">Trạng Thái</th>
+          </tr>
+        </thead>
+        <tbody id="test-case-rows">
+          </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const testCases = [
+      { id: 'TC-01', name: 'Khởi tạo mặc định', step: 'Tải lại trang game (F5) và quan sát trạng thái ban đầu của hệ thống.', expect: 'Điểm số hiển thị bằng 0. Bản đồ mặc định là "Đồng cỏ". Tốc độ ở mức "Dễ". Rắn gồm 3 đốt nằm ở vùng an toàn.' },
+      { id: 'TC-02', name: 'Di chuyển bằng phím', step: 'Ấn các phím mũi tên điều hướng (Lên, Xuống, Trái, Phải) trên bàn phím.', expect: 'Rắn lập tức thay đổi hướng di chuyển mượt mà theo đúng phím tương ứng được ấn.' },
+      { id: 'TC-03', name: 'Chống tự đâm đuôi 180°', step: 'Khi rắn đang di chuyển sang phải, ấn ngay phím mũi tên Sang Trái.', expect: 'Lệnh điều hướng ngược chiều bị hệ thống từ chối. Rắn tiếp tục đi sang phải bình thường, không tự tử.' },
+      { id: 'TC-04', name: 'Hàng đợi lệnh (Queue)', step: 'Bấm nhanh liên tiếp phím Lên rồi phím Trái trước khi rắn bước sang ô kế tiếp.', expect: 'Nhờ cơ chế Queue, rắn di chuyển đi lên 1 ô rồi mới rẽ sang trái, khắc phục triệt để lỗi chết oan.' },
+      { id: 'TC-05', name: 'Vuốt cảm ứng (Touch)', step: 'Thực hiện thao tác vuốt ngón tay theo các hướng khác nhau trên nền màn hình canvas.', expect: 'Trò chơi nhận diện chính xác sự kiện chạm và chuyển hướng rắn tương đương phím bấm.' },
+      { id: 'TC-06', name: 'Logic ăn thức ăn', step: 'Điều khiển cho đầu rắn di chuyển đè trùng vào tọa độ của quả mồi màu đỏ.', expect: 'Điểm số tăng thêm 10 điểm, chiều dài tăng 1 đốt, mồi cũ biến mất và mồi mới sinh ra ngẫu nhiên.' },
+      { id: 'TC-07', name: 'Hiệu ứng khi ăn mồi', step: 'Điều khiển ăn mồi và quan sát tại vị trí điểm số cùng vị trí quả mồi vừa biến mất.', expect: 'Số điểm trên HUD có hiệu ứng giật lớn (pop), xuất hiện hiệu ứng các hạt bụi màu rơi tự do.' },
+      { id: 'TC-08', name: 'Chuỗi Combo (Streak)', step: 'Điều khiển rắn ăn liên tiếp các quả mồi trong một khoảng thời gian ngắn.', expect: 'Góc màn hình hiển thị nhãn thông báo "🔥 Chuỗi ×N" (với N là số mồi ăn liên tục).' },
+      { id: 'TC-09', name: 'Hủy chuỗi Combo', step: 'Sau khi đạt chuỗi Combo, cho rắn bò di chuyển bình thường mà không ăn thêm mồi.', expect: 'Nhãn thông báo hiệu ứng chuỗi biến mất sau khi nhịp đếm kết thúc, bộ streak quay về 0.' },
+      { id: 'TC-10', name: 'Xuyên biên (Bản đồ 0)', step: 'Chọn Bản đồ "Đồng cỏ", điều khiển cho rắn đi thẳng đâm vào các mép cạnh màn hình.', expect: 'Rắn đi xuyên qua tường biên và xuất hiện lại ở vị trí đối diện tương ứng của bản đồ.' },
+      { id: 'TC-11', name: 'Chạm chướng ngại vật', step: 'Chọn Bản đồ "Sa mạc", điều khiển cho đầu rắn đâm vào các khối tường gạch màu nâu.', expect: 'Trò chơi dừng lại ngay lập tức, kích hoạt trạng thái Game Over và hiển thị bảng tổng kết.' },
+      { id: 'TC-12', name: 'Chức năng Đổi Bản đồ', step: 'Bấm chọn lần lượt các nút chuyển đổi bản đồ (Sa mạc, Mê cung, Hang động...).', expect: 'Trò chơi lập tức làm mới, thay đổi thiết kế vách tường, màu nền và vị trí thức ăn theo bản đồ mới.' },
+      { id: 'TC-13', name: 'Chức năng Đổi Độ khó', step: 'Bấm chọn thay đổi các mức độ khó từ "Dễ", "Vừa" sang mức "Khó".', expect: 'Tốc độ rắn di chuyển thay đổi rõ rệt (Khó chạy rất nhanh - 90ms/ô, Dễ chạy chậm - 300ms/ô).' },
+      { id: 'TC-14', name: 'Tính năng Tạm dừng', step: 'Ấn phím Cách (Space) khi trò chơi đang diễn ra.', expect: 'Con rắn đứng im bất động tại chỗ, thời gian ngưng đọng. Ấn lại phím Space để tiếp tục chơi.' },
+      { id: 'TC-15', name: 'Tự cắn vào thân', step: 'Nuôi rắn dài ra (ăn từ 4 mồi trở lên), điều khiển đầu rắn quay lại tự đâm vào thân mình.', expect: 'Hệ thống nhận diện va chạm thân, trò chơi kết thúc ngay lập tức (Game Over).' },
+      { id: 'TC-16', name: 'Màn hình Game Over', step: 'Kích hoạt trạng thái chết của rắn (đâm tường hoặc tự cắn thân).', expect: 'Màn hình Overlay mờ xuất hiện che canvas, hiển thị đúng số điểm đạt được và nút "Chơi lại".' },
+      { id: 'TC-17', name: 'Tính năng Chơi lại', step: 'Tại màn hình thông báo Game Over, click chuột vào nút "Chơi lại".', expect: 'Màn hình Overlay ẩn đi, toàn bộ thông số điểm đưa về 0, rắn hồi sinh trạng thái 3 đốt ban đầu.' },
+      { id: 'TC-18', name: 'Ghi Kỷ lục (Storage)', step: 'Chơi đạt một số điểm cao mới vượt kỷ lục hiện tại, cho chết rồi ấn F5 tải lại trang.', expect: 'Điểm kỷ lục mới được lưu vào LocalStorage và tự động nạp lại chuẩn xác lên thanh HUD.' },
+      { id: 'TC-19', name: 'Không ghi đè kỷ lục cũ', step: 'Khi đang có kỷ lục cao (ví dụ 50), chơi lượt mới đạt 10 điểm rồi để game kết thúc.', expect: 'Hệ thống giữ nguyên điểm kỷ lục là 50, không bị điểm số thấp hơn ghi đè.' },
+      { id: 'TC-20', name: 'Vị trí mồi hợp lệ', step: 'Theo dõi vị trí quả mồi sinh ra liên tục qua nhiều màn chơi có cấu trúc tường phức tạp.', expect: 'Thức ăn luôn xuất hiện ở các ô trống, tuyệt đối không trùng tọa độ tường gạch hay thân rắn.' }
+    ];
+
+    const container = document.getElementById('test-case-rows');
+    testCases.forEach(tc => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="tc-id">${tc.id}</td>
+        <td class="tc-name">${tc.name}</td>
+        <td>${tc.step}</td>
+        <td>${tc.expect}</td>
+        <td><span class="status-badge">Ready</span></td>
+      `;
+      container.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
